@@ -15,10 +15,16 @@ export const columns: ColumnDef<BannerColumn>[] = [
   {
     accessorKey: "label",
     header: "Label",
+    cell: ({row}) => (
+      <span className="font-semibold text-slate-800">{row.original.label}</span>
+    )
   },
   {
     accessorKey: "createdAt",
     header: "Date",
+    cell: ({row}) => (
+      <span className="text-xs text-slate-500">{row.original.createdAt}</span>
+    )
   },
   {
     id: "actions",
