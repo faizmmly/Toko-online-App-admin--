@@ -1,14 +1,16 @@
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LayoutDashboard, Store, CreditCard, Package, BarChart3 } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LayoutDashboard, Store, CreditCard, Package, BarChart3, Image as ImageIcon } from "lucide-react";
 import db from "@/lib/db";
+import Overview from "@/components/overview";
+import { RecentSales } from "@/components/recent-sales";
 
 interface DashboardPageProps {
   params: Promise<{ storeId: string }>;
 }
 
-const DashboardPage = async (props: DashboardPageProps) => {
+const DashboardPage = async (props: DashboardPageProps) => {  
   const params = await props.params;
 
   const store = await db.store.findFirst({
@@ -48,9 +50,14 @@ const DashboardPage = async (props: DashboardPageProps) => {
               </p>
             </div>
           </div>
+
+        <div className="hidden sm:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-600">
+            <ImageIcon className="h-4 w-4 text-slate-500" />
+            <span>{banners.length} Banner Promo</span>
+          </div>
         </div>
 
-        <Separator />
+        <Separator className="bg-slate-200/60"/>
 
         {/* Grid Kartu Statistik */}
         <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
@@ -68,38 +75,53 @@ const DashboardPage = async (props: DashboardPageProps) => {
           <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden group hover:shadow-md transition-all">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium text-slate-600">Produk Terdaftar</CardTitle>
-              <Package className="h-4 w-4 text-blue-500" />
+              <Package className="h-4 w-4 text-blue-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{products.length}</div>
-              <p className="text-xs text-muted-foreground mt-1">Stok aman tersedia</p>
+              <div className="text-2xl font-bold text-slate-900">{products.length}</div>
+              <p className="text-xs text-slate-400 mt-1">Stok aman & siap jual</p>
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden group hover:shadow-md transition-all">
+          <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden group hover:shadow-md transition-all sm:col-span-2 md:col-span-1">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium text-slate-600">Performa Toko</CardTitle>
-              <BarChart3 className="h-4 w-4 text-orange-500" />
+              <CardTitle className="text-sm font-semibold text-slate-600">Performa Toko</CardTitle>
+              <div className="p-2 bg-orange-50 rounded-xl">
+              <BarChart3 className="h-4 w-4 text-orange-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">Stable</div>
+              <div className="text-2xl font-bold text-slate-900">Stable</div>
               <p className="text-xs text-emerald-500 font-medium mt-1">+2.4% peningkatan</p>
             </CardContent>
           </Card>
         </div>
 
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
         {/* Placeholder untuk Chart/Grafik */}
-        <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl">
+        <Card className="col-span-1 lg:col-span-4 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl bg-white">
           <CardHeader>
             <CardTitle className="text-slate-800">Ikhtisar Penjualan</CardTitle>
+          <CardDescription>Grafik perkembangan omzet dari waktu ke waktu.</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px] flex items-center justify-center border-2 border-dashed border-slate-100 m-6 rounded-xl text-slate-400">
-            Grafik penjualan akan muncul di sini setelah ada transaksi.
+          <CardContent className="pl-2 pt-4">
+            <Overview data={[]} />
           </CardContent>
         </Card>
+
+        {/* Penjualan Terakhir (3 Kolom) */}
+          <Card className="col-span-1 lg:col-span-3 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl bg-white">
+            <CardHeader>
+              <CardTitle className="text-slate-800">Penjualan Terakhir</CardTitle>
+              <CardDescription>Aktivitas transaksi terbaru yang masuk.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RecentSales />
+            </CardContent>
+          </Card>
       </div>
     </div>
+  </div>
   );
 };
-
 export default DashboardPage;

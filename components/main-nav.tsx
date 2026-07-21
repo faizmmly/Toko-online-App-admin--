@@ -41,7 +41,7 @@ export function MainNav ({
     ]
     return (
         <nav className={cn(
-                "flex items-center space-x-4 lg:space-x-6",
+                "flex items-center space-x-4 lg:space-x-6 overflow-x-auto pb-2 md:pb-0",
                 className
             )}>
                 {routes.map((route) => (
@@ -49,9 +49,9 @@ export function MainNav ({
                     key={route.href}
                     href={route.href}
                     className={cn(
-                    "px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200",
-                    route.active? "text-black dark:text-white shadow-md shadow-black/20" 
-                    : "text-muted-foreground hover:bg-gray-100 hover:text-black"
+                    "text-sm font-medium transition-colors hover:text-primary whitespace-nowrap",
+                    route.active? "text-black dark:text-white font-semibold" 
+                    : "text-muted-foreground"
                 )}
                 >
                 {route.label}
