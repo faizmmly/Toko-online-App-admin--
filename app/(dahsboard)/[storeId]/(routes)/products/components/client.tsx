@@ -10,7 +10,7 @@ import { DataTable } from "@/components/ui/data-table"
 import { ApiList } from "@/components/ui/api-list"
 
 interface ProductClientProps {
-    data: ProductColumn[]
+    data: ProductColumn[];
 }
 
 export const ProductClient: React.FC<ProductClientProps> = ({
@@ -35,9 +35,9 @@ export const ProductClient: React.FC<ProductClientProps> = ({
            </Button>
         </div>
 
-        <Separator className="bg-slate-200.60"/>
+        <Separator className="bg-slate-200/60"/>
 
-        <div className="bg-white border border-slate-100 rounded-2zl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+        <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <div className="min-w-[600px]">
         <DataTable data={data} columns={columns} searchKey="name"/>
             </div>

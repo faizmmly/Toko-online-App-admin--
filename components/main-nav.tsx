@@ -41,15 +41,17 @@ export function MainNav ({
     ]
     return (
         <nav className={cn(
-                "flex items-center space-x-4 lg:space-x-6 overflow-x-auto pb-2 md:pb-0",
+                "flex items-center space-x-4 lg:space-x-6 overflow-x-auto [::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 md:pb-0",
                 className
-            )}>
+            )}
+            {...props}
+            >
                 {routes.map((route) => (
                     <Link 
                     key={route.href}
                     href={route.href}
                     className={cn(
-                    "text-sm font-medium transition-all px-3 py-1.5 rounded-lg whitespace-nowrap",
+                    "text-sm font-medium transition-all px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0",
                     route.active? 
                     "text-slate-900 bg-slate-100 font-semibold dark:bg-slate-800 dark:text-white" 
                     : "text-muted-foreground hover:text-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900"

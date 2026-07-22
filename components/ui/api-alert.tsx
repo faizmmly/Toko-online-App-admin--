@@ -30,7 +30,7 @@ export const ApiAlert: React.FC<ApiAlertProps> =({
 
     const onCopy = () => {
         navigator.clipboard.writeText(description);
-        toast.success("API berhasil di copy")
+        toast.success("API berhasil disalin ke clipboard!")
     }
     return (
         <Alert>
@@ -41,11 +41,11 @@ export const ApiAlert: React.FC<ApiAlertProps> =({
                     {textMap[variant]}
                 </Badge>
             </AlertTitle>
-            <AlertDescription className="mt-4 flex items-center justify-between">
-                <code className="relative rounde bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+            <AlertDescription className="mt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
+                <code className="relative rounde bg-muted px-[0.3rem] py-[0.2rem] font-mono text-xs font-semibold break-all max-w-full">
                     {description}
                 </code>
-                <Button variant="outline" size="sm" onClick={onCopy}>
+                <Button variant="outline" size="sm" onClick={onCopy} className="shrink-0">
                     <Copy className="h-4 w-4"/>
                 </Button>
             </AlertDescription>
