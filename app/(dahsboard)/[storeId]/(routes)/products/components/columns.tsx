@@ -10,7 +10,6 @@ export type ProductColumn = {
   name: string;
   price: string;
   category: string;
-  color: string;
   isFeatured: boolean;
   isArchived: boolean;
   createdAt: string;
@@ -64,19 +63,6 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: "Harga",
     cell: ({row}) => (
       <span className="font-medium text-slate-900">{row.original.price}</span>
-    )
-  },
-  {
-    accessorKey: "color",
-    header: "Warna",
-    cell: ({ row }) => (
-      <div className="flex items-center gap-x-2">
-        <div 
-          className="h-4 w-4 rounded-full border border-slate-300 shadow-sm" 
-          style={{ backgroundColor: row.original.color }} 
-        />
-        <span className="text-xs font-mono">{row.original.color}</span>
-      </div>
     )
   },
   {
