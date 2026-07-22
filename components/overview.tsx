@@ -3,7 +3,10 @@
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 interface overViewProps {
-    data: any[];
+    data: {
+      name: string,
+      total: number;
+    }[];
 };
 
 export const Overview: React.FC<overViewProps> = ({ data }) => {

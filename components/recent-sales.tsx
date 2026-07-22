@@ -1,44 +1,55 @@
-// components/recent-sales.tsx
-export function RecentSales() {
+"use client"
+
+import { RecentSale } from "@/actions/get-recent-sales";
+import { formatter } from "@/lib/utils";
+import { CreditCard, ShoppingBag } from "lucide-react";
+
+interface RecentSalesProps {
+  data: RecentSale[];
+}
+
+export const RecentSales: React.FC<RecentSalesProps> = ({data}) => {
+  if (!data || data.length === 0){
+    return (  
+      <div className="flex flex-col items-center justify-center p-8 text-center border border-dashed rounded-xl border-slate-200">
+        <div className="p-3 bg-slate-100 rounded-full mb-3 text-slate-400">
+          <ShoppingBag className="h-6 w-6"/>
+        </div>
+
+        <p className="text-sm font-medium text-slate-600">Belum ada transkasi</p>
+        <p className="text-xs text-slate-400 mt-1">
+          Transkasi lunas yang terbaru akan muncul disini
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Item 1 */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center font-semibold text-blue-600 text-sm">
-            FM
-          </div>
-          <div>
-            <p className="text-sm font-medium leading-none">Faiz Muhammad</p>
-            <p className="text-xs text-muted-foreground mt-1">faiz@example.com</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-sm font-semibold text-emerald-600">+Rp 250.000</p>
-          <span className="inline-block text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full mt-1">
-            Lunas
-          </span>
-        </div>
-      </div>
+      {data.map((sale) => (
+        <div key={sale.id} className="flex items-center justify-between space-x-4">
+          <div className="flex items-center space-x-4 min-w-0">
+            <div className="p-2 bg-emerald-50 rounded-xl shrink-0">
+              <CreditCard className="h-5 w-5 text-emerald-600"/>
+            </div>
 
-      {/* Item 2 */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="h-9 w-9 rounded-full bg-purple-100 flex items-center justify-center font-semibold text-purple-600 text-sm">
-            AD
+            <div className="space-y-1 min-w-0">
+              <p className="text-sm font-medium leading-none text-slate-900 truncate">
+                {sale.productNames}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">
+                {sale.phone} . {sale.address}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-medium leading-none">Ahmad Dani</p>
-            <p className="text-xs text-muted-foreground mt-1">ahmad@example.com</p>
-          </div>
+
+          <div className="font-semibold text-sm text-emerald-600 whitespace-nowrap">
+            +{formatter.format(sale.totalPrice)}
         </div>
-        <div className="text-right">
-          <p className="text-sm font-semibold text-emerald-600">+Rp 120.000</p>
-          <span className="inline-block text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full mt-1">
-            Lunas
-          </span>
         </div>
-      </div>
+      ))}
     </div>
   );
-}
+};
+
+export default RecentSales;

@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const formatter = new Intl.NumberFormat("id-ID", {
-  minimumFractionDigits: 0,
   style: "currency",
   currency: "IDR",
+  minimumFractionDigits: 0,
 })

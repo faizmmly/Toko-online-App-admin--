@@ -1,10 +1,15 @@
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LayoutDashboard, Store, CreditCard, Package, BarChart3, Image as ImageIcon } from "lucide-react";
+import { LayoutDashboard, Store, CreditCard, Package, BarChart3, Image as ImageIcon, ShoppingBag } from "lucide-react";
 import db from "@/lib/db";
 import Overview from "@/components/overview";
+import { getTotalRevenue } from "@/actions/get-total-revenue";
+import { getGraphRevenue } from "@/actions/get-graph-revenue";
 import { RecentSales } from "@/components/recent-sales";
+import { formatter } from "@/lib/utils";
+import { getRecentSales } from "@/actions/get-recent-sales";
+import { getSalesCount } from "@/actions/get-sales-count";
 
 interface DashboardPageProps {
   params: Promise<{ storeId: string }>;
@@ -30,6 +35,11 @@ const DashboardPage = async (props: DashboardPageProps) => {
         storeId: params.storeId
     }
   })
+  
+  const totalRevenue = await getTotalRevenue(params.storeId);
+  const graphData = await getGraphRevenue(params.storeId);
+  const recentSales = await getRecentSales(params.storeId);
+  const salesCount = await getSalesCount(params.storeId);
 
   return (
 
@@ -67,8 +77,10 @@ const DashboardPage = async (props: DashboardPageProps) => {
               <CreditCard className="h-4 w-4 text-emerald-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">Rp 0</div>
-              <p className="text-xs text-muted-foreground mt-1">Siklus 30 hari terakhir</p>
+              <div className="text-2xl font-bold text-slate-900">
+                {formatter.format(Number(totalRevenue))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Total akumulasi transaksi lunas</p>
             </CardContent>
           </Card>
 
@@ -83,29 +95,30 @@ const DashboardPage = async (props: DashboardPageProps) => {
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden group hover:shadow-md transition-all sm:col-span-2 md:col-span-1">
+          <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden group hover:shadow-md transition-all">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-semibold text-slate-600">Performa Toko</CardTitle>
-              <div className="p-2 bg-orange-50 rounded-xl">
-              <BarChart3 className="h-4 w-4 text-orange-600" />
-              </div>
+              <CardTitle className="text-sm font-medium text-slate-600">Total Penjualan Toko</CardTitle>
+              <ShoppingBag  className="h-4 w-4 text-orange-500"/>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-slate-900">Stable</div>
-              <p className="text-xs text-emerald-500 font-medium mt-1">+2.4% peningkatan</p>
+              <div className="text-2xl font-bold text-slate-900">+{salesCount}</div>
+              <p className="text-xs text-muted-foreground mt-1"></p>
             </CardContent>
           </Card>
         </div>
 
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-7">
         {/* Placeholder untuk Chart/Grafik */}
-        <Card className="col-span-1 lg:col-span-4 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl bg-white">
+        <Card className="col-span-1 lg:col-span-4 border-no
+        
+        const totalRevenue = await getTotalRevenue(params.storeId);
+        const graphData = await getGraphRevenue(params.storeId);ne shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl bg-white">
           <CardHeader>
             <CardTitle className="text-slate-800">Ikhtisar Penjualan</CardTitle>
           <CardDescription>Grafik perkembangan omzet dari waktu ke waktu.</CardDescription>
           </CardHeader>
           <CardContent className="pl-2 pt-4">
-            <Overview data={[]} />
+            <Overview data={graphData} />
           </CardContent>
         </Card>
 
@@ -116,7 +129,7 @@ const DashboardPage = async (props: DashboardPageProps) => {
               <CardDescription>Aktivitas transaksi terbaru yang masuk.</CardDescription>
             </CardHeader>
             <CardContent>
-              <RecentSales />
+              <RecentSales data={recentSales} />
             </CardContent>
           </Card>
       </div>
